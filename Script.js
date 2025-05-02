@@ -76,3 +76,57 @@ function popHearts() {
         heartsDiv.appendChild(heart);
     }
           }
+function goToCake() {
+    document.getElementById('popup').style.display = 'none';
+    document.getElementById('main-content').style.display = 'none';
+    document.getElementById('cake-page').style.display = 'block';
+    document.getElementById('bgMusic').play();
+    initKnife();
+}
+
+function initKnife() {
+    const knife = document.getElementById('knife');
+    let isDragging = false;
+
+    knife.addEventListener('mousedown', () => isDragging = true);
+    window.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            triggerCelebration();
+        }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const container = document.getElementById('cake-container');
+            const rect = container.getBoundingClientRect();
+            let x = e.clientX - rect.left - knife.offsetWidth/2;
+            let y = e.clientY - rect.top - knife.offsetHeight/2;
+            knife.style.left = x + 'px';
+            knife.style.top = y + 'px';
+        }
+    });
+}
+
+function triggerCelebration() {
+    const cakeContainer = document.getElementById('cake-container');
+    const popper = document.createElement('img');
+    popper.src = 'popper.png';
+    popper.style.position = 'absolute';
+    popper.style.top = '0';
+    popper.style.left = '0';
+    popper.style.width = '100px';
+    cakeContainer.appendChild(popper);
+
+    const firework = document.createElement('img');
+    firework.src = 'firework.gif';
+    firework.style.position = 'absolute';
+    firework.style.top = '0';
+    firework.style.right = '0';
+    firework.style.width = '150px';
+    cakeContainer.appendChild(firework);
+
+    setTimeout(() => {
+        document.getElementById('cake-page').innerHTML = '<button onclick="goToFinal()">Click if you love me</button>';
+    }, 3000);
+}
